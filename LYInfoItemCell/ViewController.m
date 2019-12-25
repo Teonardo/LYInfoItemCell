@@ -7,7 +7,8 @@
 //
 
 #import "ViewController.h"
-#import "LYInfoItemCell.h"
+#import "MyCell.h"
+#import "MyCell2.h"
 
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource, LYInfoItemCellDelegate>
 @property (nonatomic, strong) UITableView *tableView;
@@ -51,7 +52,8 @@ static NSString *const kNotification = @"开启通知";
     tableView.rowHeight = 50;
     tableView.tableFooterView = [UIView new];
     
-    [tableView registerClass:[LYInfoItemCell class] forCellReuseIdentifier:NSStringFromClass([LYInfoItemCell class])];
+    [tableView registerClass:[MyCell class] forCellReuseIdentifier:NSStringFromClass([MyCell class])];
+    [tableView registerClass:[MyCell2 class] forCellReuseIdentifier:NSStringFromClass([MyCell2 class])];
     
     tableView.frame = self.view.bounds;
 }
@@ -64,11 +66,12 @@ static NSString *const kNotification = @"开启通知";
 #pragma mark - Delegate
 
 #pragma mark - LYInfoItemCellDelegate
-- (void)infoItemCellDidEndEditing:(LYInfoItemCell *)cell {
+
+- (void)infoItemCell:(LYInfoItemCell *)cell didEndEditing:(UITextField *)textField {
     NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
     NSString *title = self.titlesArr[indexPath.row];
     if (title == kMobile) {
-        _mobile = cell.textField.text;
+        _mobile = cell.contentTextField.text;
     }
 }
 
@@ -89,7 +92,7 @@ static NSString *const kNotification = @"开启通知";
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 3;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -97,24 +100,30 @@ static NSString *const kNotification = @"开启通知";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    LYInfoItemCell *cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([LYInfoItemCell class]) forIndexPath:indexPath];
-    cell.delegate = self;
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     
     NSString *title = self.titlesArr[indexPath.row];
-
+    
+    LYInfoItemCell *cell = nil;
+    if (title == kNotification) {
+        cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([MyCell2 class]) forIndexPath:indexPath];
+    } else {
+        cell = [tableView dequeueReusableCellWithIdentifier:NSStringFromClass([MyCell class]) forIndexPath:indexPath];
+    }
+    
+    cell.delegate = self;
+    
     // 注意:需要先将所有用到的存在差异的 特性/属性 统一进行重置(默认设置), 然后在针对不同的Item 进行差异设置, 以避免cell重用带来的影响.
-    cell.ly_accessoryView = nil;
+    
     cell.ly_accessoryView.hidden = YES;
-    cell.ly_image = nil;
-    cell.textField.enabled = NO;
-    cell.textField.text = nil;
-    cell.textField.placeholder = nil;
+    cell.contentTextField.enabled = NO;
+    cell.contentTextField.text = nil;
+    cell.contentTextField.placeholder = nil;
     cell.autoAlignment = YES;
     cell.fixedTitleWidth = -1;
-    cell.textField.textAlignment = NSTextAlignmentRight;
+    cell.contentTextField.textAlignment = NSTextAlignmentRight;
+    cell.titleTextField.leftView = nil;
     
-    cell.titleLabel.text = title;
+    cell.titleTextField.text = title;
     
     // 差异化设置
     if (indexPath.section == 0) {
@@ -122,38 +131,57 @@ static NSString *const kNotification = @"开启通知";
     }
     
     if (title == kName) {
-        cell.textField.text = @"孙行者";
+        cell.contentTextField.text = @"孙行者";
     }
     else if (title == kNation) {
-        cell.textField.placeholder = @"请选择";
+        cell.contentTextField.placeholder = @"请选择";
         
         cell.ly_accessoryView.hidden = NO;
-        cell.ly_image = [UIImage imageNamed:@"arrow_right_gray"];
     }
     else if (title == kIDNumber) {
-        cell.textField.text = @"340823199906065555";
+        cell.contentTextField.text = @"340823199906065555-340823199906065555-340823199906065555";
     }
     else if (title == kMobile) {
-        cell.textField.enabled = YES; // 打开输入
-        cell.textField.placeholder = @"请输入手机号";
+        cell.contentTextField.enabled = YES; // 打开输入
+        cell.contentTextField.placeholder = @"请输入手机号";
     }
     else if (title == kEducation) {
-        cell.textField.text = @"未知";
+        cell.contentTextField.text = @"未知";
     }
     else if (title == kNotification) {
-        
-        cell.textField.text = @"状态";
+        cell.contentTextField.text = @"状态";
         cell.ly_accessoryView.hidden = NO;
-        UISwitch *swi = [[UISwitch alloc] initWithFrame:CGRectMake(0, 0, 60, 30)];
-        [swi addTarget:self action:@selector(handleSwitchAction:) forControlEvents:UIControlEventValueChanged];
-        // swi.on = YES; // 设置记录的开关状态
-        cell.ly_accessoryView = swi;
     }
     
     // 第三分区 固定标题宽度
     if (indexPath.section == 2) {
         cell.fixedTitleWidth = 80;
-        cell.textField.textAlignment = NSTextAlignmentLeft;
+        cell.contentTextField.textAlignment = NSTextAlignmentLeft;
+    }
+    
+    // 左边显示图片
+    if (indexPath.section == 3) {
+        cell.titleTextField.leftView = ({
+            
+            UIImageView *imgView = [UIImageView new];
+            imgView.contentMode = UIViewContentModeCenter;
+            imgView.image = [UIImage imageNamed:@"tag"];
+            imgView.frame = CGRectMake(0, 0, 30, 30);
+            imgView.layer.cornerRadius = 15;
+            imgView.layer.masksToBounds = YES;
+            imgView.backgroundColor = [UIColor redColor];
+            UIView *view = imgView;
+            
+            // iOS 13 textField.leftView 适配
+            if (@available(iOS 13, *)) {
+                view = [UIView new];
+                view.frame = imgView.bounds;
+                [view addSubview:imgView];
+            }
+            
+            view;
+        });
+        cell.titleTextField.leftViewMode = UITextFieldViewModeAlways;
     }
     
     return cell;
@@ -163,12 +191,16 @@ static NSString *const kNotification = @"开启通知";
     if (section == 0) {
         return @"内容文本对齐";
     }
+    else if (section == 1) {
+        return @"内容整体右对齐";
+    }
     else if (section == 2) {
         return @"固定标题宽度";
     }
-    else {
-        return @"内容整体右对齐";
+    else if (section == 3) {
+        return @"左边显示图片";
     }
+    return nil;
 }
 
 #pragma mark - Getter

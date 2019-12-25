@@ -11,12 +11,14 @@
 
 @interface LYInfoItemView () <UITextFieldDelegate>
 
-@property (nonatomic, strong, readwrite) UILabel *titleLabel;
-@property (nonatomic, strong, readwrite) UITextField *textField;
+@property (nonatomic, strong, readwrite) UITextField *titleTextField;
+@property (nonatomic, strong, readwrite) UITextField *contentTextField;
 
 @end
 
-@implementation LYInfoItemView
+@implementation LYInfoItemView {
+    CGSize _accessoryViewSizeForSwitch;
+}
 @synthesize accessoryView = _accessoryView;
 
 - (instancetype)initWithFrame:(CGRect)frame
@@ -24,8 +26,8 @@
     self = [super initWithFrame:frame];
     if (self) {
         // 默认设置
-        _titleLabelLeftMargin = 18;
-        _titleLabelRightMargin = 8;
+        _titleTextFieldLeftMargin = 18;
+        _titleTextFieldRightMargin = 8;
         _accessoryViewLeftMargin = 8;
         _accessoryViewRightMargin = 18;
         _fixedTitleWidth = -1;
@@ -38,11 +40,11 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    [_titleLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).offset(self.titleLabelLeftMargin);
+    [_titleTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self).offset(self.titleTextFieldLeftMargin);
         make.centerY.equalTo(self);
         
-        if (self->_textField == nil) {
+        if (self->_contentTextField == nil) {
             if (self->_accessoryView) {
                 make.right.lessThanOrEqualTo(self->_accessoryView.mas_left).offset(self.accessoryViewLeftMargin);
             } else {
@@ -56,12 +58,12 @@
         
     }];
     
-    [_textField mas_remakeConstraints:^(MASConstraintMaker *make) {
+    [_contentTextField mas_remakeConstraints:^(MASConstraintMaker *make) {
         
-        if (self->_titleLabel) {
-            make.left.equalTo(self->_titleLabel.mas_right).offset(self.titleLabelRightMargin);
+        if (self->_titleTextField) {
+            make.left.equalTo(self->_titleTextField.mas_right).offset(self.titleTextFieldRightMargin);
         } else {
-            make.left.equalTo(self).offset(self.titleLabelLeftMargin);
+            make.left.equalTo(self).offset(self.titleTextFieldLeftMargin);
         }
         
         make.top.bottom.equalTo(self);
@@ -86,21 +88,22 @@
 }
 
 - (CGSize)intrinsicContentSize {
-    return CGSizeMake(UIViewNoIntrinsicMetric, 50);
+    return CGSizeMake(UIViewNoIntrinsicMetric, 50); 
 }
 
 #pragma mark - UITextFieldDelegate
+
 - (void)textFieldDidBeginEditing:(UITextField *)textField {
     !self.didBeginEditing ? : self.didBeginEditing(textField);
-    if ([self.delegate respondsToSelector:@selector(infoItemViewDidBeginEditing:)]) {
-        [self.delegate infoItemViewDidBeginEditing:self];
+    if ([self.delegate respondsToSelector:@selector(infoItemView:didBeginEditing:)]) {
+        [self.delegate infoItemView:self didBeginEditing:textField];
     }
 }
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     !self.didEndEditing ? : self.didEndEditing(textField);
-    if ([self.delegate respondsToSelector:@selector(infoItemViewDidEndEditing:)]) {
-        [self.delegate infoItemViewDidEndEditing:self];
+    if ([self.delegate respondsToSelector:@selector(infoItemView:didEndEditing:)]) {
+        [self.delegate infoItemView:self didEndEditing:textField];
     }
 }
 
@@ -117,7 +120,7 @@
 - (void)setImage:(UIImage *)image {
     if (_image != image) {
         _image = image;
-        if (![self.accessoryView isKindOfClass:[UIImageView class]]) {
+        if (![_accessoryView isKindOfClass:[UIImageView class]]) {
             self.accessoryView = [UIImageView new];
         }
         [(UIImageView *)self.accessoryView setImage:image];
@@ -125,22 +128,22 @@
     }
 }
 
-- (void)setTitleLabelLeftMargin:(CGFloat)titleLabelLeftMargin {
-    if (titleLabelLeftMargin < 0) {
+- (void)setTitleTextFieldLeftMargin:(CGFloat)titleTextFieldLeftMargin {
+    if (titleTextFieldLeftMargin < 0) {
         return;
     }
-    if (_titleLabelLeftMargin != titleLabelLeftMargin) {
-        _titleLabelLeftMargin = titleLabelLeftMargin;
+    if (_titleTextFieldLeftMargin != titleTextFieldLeftMargin) {
+        _titleTextFieldLeftMargin = titleTextFieldLeftMargin;
         [self setNeedsLayout];
     }
 }
 
-- (void)setTitleLabelRightMargin:(CGFloat)titleLabelRightMargin {
-    if (titleLabelRightMargin < 0) {
+- (void)setTitleTextFieldRightMargin:(CGFloat)titleTextFieldRightMargin {
+    if (titleTextFieldRightMargin < 0) {
         return;
     }
-    if (_titleLabelRightMargin != titleLabelRightMargin) {
-        _titleLabelRightMargin = titleLabelRightMargin;
+    if (_titleTextFieldRightMargin != titleTextFieldRightMargin) {
+        _titleTextFieldRightMargin = titleTextFieldRightMargin;
         [self setNeedsLayout];
     }
 }
@@ -173,41 +176,44 @@
 }
 
 #pragma mark - Getter
-- (UILabel *)titleLabel {
-    if (!_titleLabel) {
-        _titleLabel = [[UILabel alloc] init];
-        _titleLabel.font = [UIFont systemFontOfSize:15.0];
-        //_titleLabel.backgroundColor = [UIColor orangeColor];
-        [_titleLabel setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
-        [self addSubview:_titleLabel];
+- (UITextField *)titleTextField {
+    if (!_titleTextField) {
+        _titleTextField = [[UITextField alloc] init];
+        _titleTextField.font = [UIFont systemFontOfSize:15.0];
+        //_titleTextField.backgroundColor = [UIColor orangeColor];
+        [_titleTextField setContentHuggingPriority:1000 forAxis:UILayoutConstraintAxisHorizontal];
+        _titleTextField.delegate = self;
+        _titleTextField.enabled = NO;
+        [self addSubview:_titleTextField];
     }
-    return _titleLabel;
+    return _titleTextField;
 }
 
-- (UITextField *)textField {
-    if (!_textField) {
-        _textField = [[UITextField alloc] init];
-        _textField.textAlignment = NSTextAlignmentRight;
-        //_textField.backgroundColor = [UIColor cyanColor];
-        _textField.font = [UIFont systemFontOfSize:15.0];
-        [_textField setContentHuggingPriority:999 forAxis:UILayoutConstraintAxisHorizontal];
-        _textField.delegate = self;
-        [self addSubview:_textField];
+- (UITextField *)contentTextField {
+    if (!_contentTextField) {
+        _contentTextField = [[UITextField alloc] init];
+        _contentTextField.textAlignment = NSTextAlignmentRight;
+        //_contentTextField.backgroundColor = [UIColor cyanColor];
+        _contentTextField.font = [UIFont systemFontOfSize:15.0];
+        [_contentTextField setContentHuggingPriority:999 forAxis:UILayoutConstraintAxisHorizontal];
+        _contentTextField.delegate = self;
+        _contentTextField.enabled = NO;
+        [self addSubview:_contentTextField];
     }
-    return _textField;
-}
-
-- (UIView *)accessoryView {
-    if (!_accessoryView) {
-        _accessoryView = [[UIImageView alloc] init];
-        [self addSubview:_accessoryView];
-    }
-    return _accessoryView;
+    return _contentTextField;
 }
 
 - (CGSize)accessoryViewSize {
     if (!_accessoryView) {
         return CGSizeZero;
+    }
+    
+    // ???: 如果是 UISwitch, 必须记录第一获取到的size, 不然每次获取时 size 都会变大
+    if ([_accessoryView isKindOfClass:[UISwitch class]]) {
+        if (CGSizeEqualToSize(_accessoryViewSizeForSwitch, CGSizeZero)) {
+            _accessoryViewSizeForSwitch = _accessoryView.bounds.size;
+        }
+        return _accessoryViewSizeForSwitch;
     }
     
     // 如果设置了大小(不为CGSizeZero), 直接取size

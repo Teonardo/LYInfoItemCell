@@ -13,15 +13,21 @@ NS_ASSUME_NONNULL_BEGIN
 @class LYInfoItemView;
 @protocol LYInfoItemViewDelegate <NSObject>
 @optional
-- (void)infoItemViewDidBeginEditing:(LYInfoItemView *)itemView;
-- (void)infoItemViewDidEndEditing:(LYInfoItemView *)itemView;
+- (void)infoItemView:(LYInfoItemView *)itemView didBeginEditing:(UITextField *)textField;
+- (void)infoItemView:(LYInfoItemView *)itemView didEndEditing:(UITextField *)textField;
 
 @end
 
 @interface LYInfoItemView : UIView
+/**
+ "标题"文本框.默认设置 enabled = NO;
+ */
+@property (nonatomic, strong, readonly) UITextField *titleTextField;
 
-@property (nonatomic, strong, readonly) UILabel *titleLabel;
-@property (nonatomic, strong, readonly) UITextField *textField;
+/**
+ "内容"文本框.默认设置 enabled = NO;
+ */
+@property (nonatomic, strong, readonly) UITextField *contentTextField;
 
 /**
  最右边的附属视图.
@@ -36,8 +42,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable) UIImage *image;
 
-@property (nonatomic, assign) CGFloat titleLabelLeftMargin;
-@property (nonatomic, assign) CGFloat titleLabelRightMargin;
+@property (nonatomic, assign) CGFloat titleTextFieldLeftMargin;
+@property (nonatomic, assign) CGFloat titleTextFieldRightMargin;
 @property (nonatomic, assign) CGFloat accessoryViewLeftMargin;
 @property (nonatomic, assign) CGFloat accessoryViewRightMargin;
 
@@ -48,7 +54,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat fixedTitleWidth;
 
 /**
- 在 accessoryView.hide == YES 时, 是否将 textField 的右边与accessoryView对齐.
+ 在 accessoryView.hide == YES 时, 是否将 contentTextField 的右边与accessoryView对齐.
  */
 @property (nonatomic, assign) BOOL autoAlignment;
 

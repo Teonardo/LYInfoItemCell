@@ -29,10 +29,10 @@
     LYInfoItemView *itemView = [[LYInfoItemView alloc] init];
     [self.contentView addSubview:itemView];
     self.itemView = itemView;
-    itemView.titleLabel.textColor = [UIColor blackColor];
-    itemView.titleLabel.font = [UIFont systemFontOfSize:14.f];
-    itemView.textField.textColor = [UIColor grayColor];
-    itemView.textField.font = [UIFont systemFontOfSize:14.f];
+    itemView.titleTextField.textColor = [UIColor blackColor];
+    itemView.titleTextField.font = [UIFont systemFontOfSize:14.f];
+    itemView.contentTextField.textColor = [UIColor grayColor];
+    itemView.contentTextField.font = [UIFont systemFontOfSize:14.f];
     itemView.delegate = self;
     
     [itemView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -41,15 +41,15 @@
 }
 
 #pragma mark - LYInfoItemViewDelegate
-- (void)infoItemViewDidBeginEditing:(LYInfoItemView *)itemView {
-    if ([self.delegate respondsToSelector:@selector(infoItemCellDidBeginEditing:)]) {
-        [self.delegate infoItemCellDidBeginEditing:self];
+- (void)infoItemView:(LYInfoItemView *)itemView didBeginEditing:(UITextField *)textField {
+    if ([self.delegate respondsToSelector:@selector(infoItemCell:didBeginEditing:)]) {
+        [self.delegate infoItemCell:self didBeginEditing:textField];
     }
 }
 
-- (void)infoItemViewDidEndEditing:(LYInfoItemView *)itemView {
-    if ([self.delegate respondsToSelector:@selector(infoItemCellDidEndEditing:)]) {
-        [self.delegate infoItemCellDidEndEditing:self];
+- (void)infoItemView:(LYInfoItemView *)itemView didEndEditing:(UITextField *)textField {
+    if ([self.delegate respondsToSelector:@selector(infoItemCell:didEndEditing:)]) {
+        [self.delegate infoItemCell:self didEndEditing:textField];
     }
 }
 
@@ -62,12 +62,12 @@
     self.itemView.image = ly_image;
 }
 
-- (void)setTitleLabelLeftMargin:(CGFloat)titleLabelLeftMargin {
-    self.itemView.titleLabelLeftMargin = titleLabelLeftMargin;
+- (void)setTitleTextFieldLeftMargin:(CGFloat)titleTextFieldLeftMargin {
+    self.itemView.titleTextFieldLeftMargin = titleTextFieldLeftMargin;
 }
 
-- (void)setTitleLabelRightMargin:(CGFloat)titleLabelRightMargin {
-    self.itemView.titleLabelRightMargin = titleLabelRightMargin;
+- (void)setTitleTextFieldRightMargin:(CGFloat)titleTextFieldRightMargin {
+    self.itemView.titleTextFieldRightMargin = titleTextFieldRightMargin;
 }
 
 - (void)setAccessoryViewLeftMargin:(CGFloat)accessoryViewLeftMargin {
@@ -95,12 +95,12 @@
 }
 
 #pragma mark - Getter
-- (UILabel *)titleLabel {
-    return self.itemView.titleLabel;
+- (UITextField *)titleTextField {
+    return self.itemView.titleTextField;
 }
 
-- (UITextField *)textField {
-    return self.itemView.textField;
+- (UITextField *)contentTextField {
+    return self.itemView.contentTextField;
 }
 
 - (UIView *)ly_accessoryView {
@@ -111,12 +111,12 @@
     return self.itemView.image;
 }
 
-- (CGFloat)titleLabelLeftMargin {
-    return self.itemView.titleLabelLeftMargin;
+- (CGFloat)titleTextFieldLeftMargin {
+    return self.itemView.titleTextFieldLeftMargin;
 }
 
-- (CGFloat)titleLabelRightMargin {
-    return self.itemView.titleLabelRightMargin;
+- (CGFloat)titleTextFieldRightMargin {
+    return self.itemView.titleTextFieldRightMargin;
 }
 
 - (CGFloat)accessoryViewLeftMargin {

@@ -13,15 +13,15 @@ NS_ASSUME_NONNULL_BEGIN
 @class LYInfoItemCell;
 @protocol LYInfoItemCellDelegate <NSObject>
 @optional
-- (void)infoItemCellDidBeginEditing:(LYInfoItemCell *)cell;
-- (void)infoItemCellDidEndEditing:(LYInfoItemCell *)cell;
+- (void)infoItemCell:(LYInfoItemCell *)cell didBeginEditing:(UITextField *)textField;
+- (void)infoItemCell:(LYInfoItemCell *)cell didEndEditing:(UITextField *)textField;
 
 @end
 
 @interface LYInfoItemCell : UITableViewCell
 
-@property (nonatomic, strong, readonly) UILabel *titleLabel;
-@property (nonatomic, strong, readonly) UITextField *textField;
+@property (nonatomic, strong, readonly) UITextField *titleTextField;
+@property (nonatomic, strong, readonly) UITextField *contentTextField;
 
 /**
  最右边的"附件"视图.
@@ -36,8 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, strong, nullable) UIImage *ly_image;
 
-@property (nonatomic, assign) CGFloat titleLabelLeftMargin;
-@property (nonatomic, assign) CGFloat titleLabelRightMargin;
+@property (nonatomic, assign) CGFloat titleTextFieldLeftMargin;
+@property (nonatomic, assign) CGFloat titleTextFieldRightMargin;
 @property (nonatomic, assign) CGFloat accessoryViewLeftMargin;
 @property (nonatomic, assign) CGFloat accessoryViewRightMargin;
 
@@ -48,7 +48,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat fixedTitleWidth;
 
 /**
- 在 ly_accessoryView.hide == YES 时, 是否将 textField 的右边与ly_accessoryView对齐.
+ 在 ly_accessoryView.hide == YES 时, 是否将 contentTextField 的右边与ly_accessoryView对齐.
  */
 @property (nonatomic, assign) BOOL autoAlignment;
 

@@ -26,7 +26,9 @@
 		BF29965B23347919000586E6 /* MASViewConstraint.m in Sources */ = {isa = PBXBuildFile; fileRef = BF29965123347919000586E6 /* MASViewConstraint.m */; };
 		BF29965C23347919000586E6 /* MASViewAttribute.m in Sources */ = {isa = PBXBuildFile; fileRef = BF29965223347919000586E6 /* MASViewAttribute.m */; };
 		BF29966223347963000586E6 /* LYInfoItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = BF29966023347963000586E6 /* LYInfoItemView.m */; };
-		BF29966823347B8A000586E6 /* LYInfoItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BF29966723347B8A000586E6 /* LYInfoItemCell.m */; };
+		BFD0859C23B33CAD00E7F898 /* LYInfoItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BFD0859A23B33CAD00E7F898 /* LYInfoItemCell.m */; };
+		BFD0859F23B3528800E7F898 /* MyCell.m in Sources */ = {isa = PBXBuildFile; fileRef = BFD0859E23B3528800E7F898 /* MyCell.m */; };
+		BFD085A223B355D100E7F898 /* MyCell2.m in Sources */ = {isa = PBXBuildFile; fileRef = BFD085A123B355D100E7F898 /* MyCell2.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,8 +92,12 @@
 		BF29965223347919000586E6 /* MASViewAttribute.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MASViewAttribute.m; sourceTree = "<group>"; };
 		BF29965D23347963000586E6 /* LYInfoItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYInfoItemView.h; sourceTree = "<group>"; };
 		BF29966023347963000586E6 /* LYInfoItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYInfoItemView.m; sourceTree = "<group>"; };
-		BF29966623347B8A000586E6 /* LYInfoItemCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LYInfoItemCell.h; sourceTree = "<group>"; };
-		BF29966723347B8A000586E6 /* LYInfoItemCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LYInfoItemCell.m; sourceTree = "<group>"; };
+		BFD0859A23B33CAD00E7F898 /* LYInfoItemCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LYInfoItemCell.m; sourceTree = "<group>"; };
+		BFD0859B23B33CAD00E7F898 /* LYInfoItemCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LYInfoItemCell.h; sourceTree = "<group>"; };
+		BFD0859D23B3528800E7F898 /* MyCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCell.h; sourceTree = "<group>"; };
+		BFD0859E23B3528800E7F898 /* MyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCell.m; sourceTree = "<group>"; };
+		BFD085A023B355D100E7F898 /* MyCell2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MyCell2.h; sourceTree = "<group>"; };
+		BFD085A123B355D100E7F898 /* MyCell2.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MyCell2.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +152,10 @@
 				BF299637233478CC000586E6 /* source */,
 				BF299605233478B0000586E6 /* AppDelegate.h */,
 				BF299606233478B0000586E6 /* AppDelegate.m */,
+				BFD0859D23B3528800E7F898 /* MyCell.h */,
+				BFD0859E23B3528800E7F898 /* MyCell.m */,
+				BFD085A023B355D100E7F898 /* MyCell2.h */,
+				BFD085A123B355D100E7F898 /* MyCell2.m */,
 				BF299608233478B0000586E6 /* ViewController.h */,
 				BF299609233478B0000586E6 /* ViewController.m */,
 				BF29960B233478B0000586E6 /* Main.storyboard */,
@@ -180,8 +190,8 @@
 			children = (
 				BF29965D23347963000586E6 /* LYInfoItemView.h */,
 				BF29966023347963000586E6 /* LYInfoItemView.m */,
-				BF29966623347B8A000586E6 /* LYInfoItemCell.h */,
-				BF29966723347B8A000586E6 /* LYInfoItemCell.m */,
+				BFD0859B23B33CAD00E7F898 /* LYInfoItemCell.h */,
+				BFD0859A23B33CAD00E7F898 /* LYInfoItemCell.m */,
 			);
 			path = source;
 			sourceTree = "<group>";
@@ -348,9 +358,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BFD085A223B355D100E7F898 /* MyCell2.m in Sources */,
 				BF29965623347919000586E6 /* MASConstraintMaker.m in Sources */,
 				BF29960A233478B0000586E6 /* ViewController.m in Sources */,
-				BF29966823347B8A000586E6 /* LYInfoItemCell.m in Sources */,
 				BF29965423347919000586E6 /* ViewController+MASAdditions.m in Sources */,
 				BF29965B23347919000586E6 /* MASViewConstraint.m in Sources */,
 				BF299615233478B1000586E6 /* main.m in Sources */,
@@ -358,8 +368,10 @@
 				BF29965A23347919000586E6 /* MASConstraint.m in Sources */,
 				BF29965823347919000586E6 /* NSArray+MASAdditions.m in Sources */,
 				BF299607233478B0000586E6 /* AppDelegate.m in Sources */,
+				BFD0859F23B3528800E7F898 /* MyCell.m in Sources */,
 				BF29965523347919000586E6 /* MASCompositeConstraint.m in Sources */,
 				BF29965923347919000586E6 /* View+MASAdditions.m in Sources */,
+				BFD0859C23B33CAD00E7F898 /* LYInfoItemCell.m in Sources */,
 				BF29965323347919000586E6 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				BF29966223347963000586E6 /* LYInfoItemView.m in Sources */,
 				BF29965C23347919000586E6 /* MASViewAttribute.m in Sources */,
