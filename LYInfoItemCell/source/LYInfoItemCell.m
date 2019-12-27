@@ -29,10 +29,6 @@
     LYInfoItemView *itemView = [[LYInfoItemView alloc] init];
     [self.contentView addSubview:itemView];
     self.itemView = itemView;
-    itemView.titleTextField.textColor = [UIColor blackColor];
-    itemView.titleTextField.font = [UIFont systemFontOfSize:14.f];
-    itemView.contentTextField.textColor = [UIColor grayColor];
-    itemView.contentTextField.font = [UIFont systemFontOfSize:14.f];
     itemView.delegate = self;
     
     [itemView mas_makeConstraints:^(MASConstraintMaker *make) {

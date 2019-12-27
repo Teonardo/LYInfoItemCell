@@ -48,7 +48,7 @@
             if (self->_accessoryView) {
                 make.right.lessThanOrEqualTo(self->_accessoryView.mas_left).offset(self.accessoryViewLeftMargin);
             } else {
-                make.right.lessThanOrEqualTo(self).offset(self.accessoryViewRightMargin);
+                make.right.lessThanOrEqualTo(self).offset(-self.accessoryViewRightMargin);
             }
         }
         
